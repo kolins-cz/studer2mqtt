@@ -1,0 +1,35 @@
+--- Logging error ---
+Traceback (most recent call last):
+  File "/home/pi/.local/lib/python3.9/site-packages/xcom485i/client.py", line 432, in read_info
+    response = rtu.send_message(message, self.serial_port)
+  File "/home/pi/.local/lib/python3.9/site-packages/umodbus/client/serial/rtu.py", line 218, in send_message
+    raise_for_exception_adu(response_error_adu)
+  File "/home/pi/.local/lib/python3.9/site-packages/umodbus/client/serial/rtu.py", line 202, in raise_for_exception_adu
+    pdu_to_function_code_or_raise_error(resp_pdu)
+  File "/home/pi/.local/lib/python3.9/site-packages/umodbus/functions.py", line 118, in pdu_to_function_code_or_raise_error
+    raise error_code_to_exception_map[error_code]
+umodbus.exceptions.GatewayPathUnavailableError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/logging/__init__.py", line 1079, in emit
+    msg = self.format(record)
+  File "/usr/lib/python3.9/logging/__init__.py", line 923, in format
+    return fmt.format(record)
+  File "/usr/lib/python3.9/logging/__init__.py", line 659, in format
+    record.message = record.getMessage()
+  File "/usr/lib/python3.9/logging/__init__.py", line 363, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/home/pi/studer2mqtt/studer2mqtt.py", line 78, in <module>
+    battery_voltage = xcom485i.read_info(xcom485i.addresses.xt_group_device_id, 0)
+  File "/home/pi/.local/lib/python3.9/site-packages/xcom485i/client.py", line 437, in read_info
+    logger.error("--> Modbus error : ", e)
+Message: '--> Modbus error : '
+Arguments: ( The gateway is probably misconfigured or overloaded. ,)
+Traceback (most recent call last):
+  File "/home/pi/studer2mqtt/studer2mqtt.py", line 79, in <module>
+    battery_voltage = round(battery_voltage, 3)
+TypeError: type NoneType doesn't define __round__ method

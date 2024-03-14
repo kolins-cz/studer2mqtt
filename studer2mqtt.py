@@ -88,8 +88,54 @@ if __name__ == "__main__":
             sum_active_power = round(l1_active_power + l2_active_power + l3_active_power,3)
             print('Sum power:', sum_apparent_power, 'kVA', '   ', sum_active_power, 'kW')
 
+            xt1_batt_current = xcom485i.read_info(xcom485i.addresses. xt_1_device_id, 10)
+            xt1_batt_current  = round(xt1_batt_current , 3)
+            print('XT1 Battery Current:', xt1_batt_current , 'A')
 
+            xt2_batt_current = xcom485i.read_info(xcom485i.addresses. xt_2_device_id, 10)
+            xt2_batt_current  = round(xt2_batt_current , 3)
+            print('XT2 Battery Current:', xt2_batt_current , 'A')
 
+            xt3_batt_current = xcom485i.read_info(xcom485i.addresses. xt_3_device_id, 10)
+            xt3_batt_current  = round(xt3_batt_current , 3)
+            print('XT3 Battery Current:', xt3_batt_current , 'A')
+
+            xt4_batt_current = xcom485i.read_info(xcom485i.addresses. xt_4_device_id, 10)
+            xt4_batt_current  = round(xt4_batt_current , 3)
+            print('XT4 Battery Current:', xt4_batt_current , 'A')
+            
+            xt1_apparent_power = xcom485i.read_info(xcom485i.addresses.xt_1_device_id, 278)
+            xt1_active_power = xcom485i.read_info(xcom485i.addresses.xt_1_device_id, 272)
+            xt1_apparent_power = round(xt1_apparent_power, 3)
+            xt1_active_power = round(xt1_active_power, 3)
+            print('XT1 power:', xt1_apparent_power, 'kVA', '   ', xt1_active_power, 'kW')
+
+            xt2_apparent_power = xcom485i.read_info(xcom485i.addresses.xt_2_device_id, 278)
+            xt2_active_power = xcom485i.read_info(xcom485i.addresses.xt_2_device_id, 272)
+            xt2_apparent_power = round(xt2_apparent_power, 3)
+            xt2_active_power = round(xt2_active_power, 3)
+            print('XT2 power:', xt2_apparent_power, 'kVA', '   ', xt2_active_power, 'kW')
+
+            xt3_apparent_power = xcom485i.read_info(xcom485i.addresses.xt_3_device_id, 278)
+            xt3_active_power = xcom485i.read_info(xcom485i.addresses.xt_3_device_id, 272)
+            xt3_apparent_power = round(xt3_apparent_power, 3)
+            xt3_active_power = round(xt3_active_power, 3)
+            print('XT3 power:', xt3_apparent_power, 'kVA', '   ', xt3_active_power, 'kW')
+
+            xt4_apparent_power = xcom485i.read_info(xcom485i.addresses.xt_4_device_id, 278)
+            xt4_active_power = xcom485i.read_info(xcom485i.addresses.xt_4_device_id, 272)
+            xt4_apparent_power = round(xt4_apparent_power, 3)
+            xt4_active_power = round(xt4_active_power, 3)
+            print('XT4 power:', xt4_apparent_power, 'kVA', '   ', xt4_active_power, 'kW')
+            
+            client.publish(f"{MQTT_TOPIC}/XT/XT1_apparent_power_kVA", str(xt1_apparent_power))
+            client.publish(f"{MQTT_TOPIC}/XT/XT1_active_power_kW", str(xt1_active_power))
+            client.publish(f"{MQTT_TOPIC}/XT/XT2_apparent_power_kVA", str(xt2_apparent_power))
+            client.publish(f"{MQTT_TOPIC}/XT/XT2_active_power_kW", str(xt2_active_power))
+            client.publish(f"{MQTT_TOPIC}/XT/XT3_apparent_power_kVA", str(xt3_apparent_power))
+            client.publish(f"{MQTT_TOPIC}/XT/XT3_active_power_kW", str(xt3_active_power))
+            client.publish(f"{MQTT_TOPIC}/XT/XT4_apparent_power_kVA", str(xt4_apparent_power))
+            client.publish(f"{MQTT_TOPIC}/XT/XT4_active_power_kW", str(xt4_active_power))
             client.publish(f"{MQTT_TOPIC}/AC/L1_apparent_power_kVA", str(l1_apparent_power))
             client.publish(f"{MQTT_TOPIC}/AC/L1_active_power_kW", str(l1_active_power))
             client.publish(f"{MQTT_TOPIC}/AC/L2_apparent_power_kVA", str(l2_apparent_power))
@@ -106,5 +152,9 @@ if __name__ == "__main__":
             client.publish(f"{MQTT_TOPIC}/AC/Sum_apparent_power_kVA", str(sum_apparent_power))
             client.publish(f"{MQTT_TOPIC}/AC/Sum_active_power_kW", str(sum_active_power))
             client.publish(f"{MQTT_TOPIC}/DC/Battery_voltage_target_V", str(battery_voltage_target))
+            client.publish(f"{MQTT_TOPIC}/XT/XT1_Battery_Current_A", str(xt1_batt_current))
+            client.publish(f"{MQTT_TOPIC}/XT/XT2_Battery_Current_A", str(xt2_batt_current))
+            client.publish(f"{MQTT_TOPIC}/XT/XT3_Battery_Current_A", str(xt3_batt_current))
+            client.publish(f"{MQTT_TOPIC}/XT/XT4_Battery_Current_A", str(xt4_batt_current))
 
 
