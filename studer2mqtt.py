@@ -2,6 +2,7 @@
 
 import serial
 from xcom485i.client import Xcom485i
+import time
 import paho.mqtt.client as mqtt
 
 SERIAL_PORT_NAME = '/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0-port0'  # your serial port interface name
@@ -156,5 +157,7 @@ if __name__ == "__main__":
             client.publish(f"{MQTT_TOPIC}/XT/XT2_Battery_Current_A", str(xt2_batt_current))
             client.publish(f"{MQTT_TOPIC}/XT/XT3_Battery_Current_A", str(xt3_batt_current))
             client.publish(f"{MQTT_TOPIC}/XT/XT4_Battery_Current_A", str(xt4_batt_current))
+            # Wait for 500ms
+            time.sleep(0.5)
 
 
