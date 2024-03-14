@@ -1,3 +1,5 @@
+# https://xcom485i.readthedocs.io/en/latest/addresses.html
+
 import serial
 from xcom485i.client import Xcom485i
 import paho.mqtt.client as mqtt
@@ -54,11 +56,55 @@ if __name__ == "__main__":
             outputfreq = xcom485i.read_info(xcom485i.addresses.xt_group_device_id, 170)
             outputfreq = round(outputfreq, 3)
             print('Output frequency:', outputfreq, 'Hz')
+
+            l1_batt_current = xcom485i.read_info(xcom485i.addresses.xt_l1_group_device_id, 10)
+            l1_batt_current  = round(l1_batt_current , 3)
+            print('L1 Battery Current:', l1_batt_current , 'A')
+
+            l2_batt_current = xcom485i.read_info(xcom485i.addresses.xt_l2_group_device_id, 10)
+            l2_batt_current  = round(l2_batt_current , 3)
+            print('L2 Battery Current:', l2_batt_current , 'A')
+
+            l3_batt_current = xcom485i.read_info(xcom485i.addresses.xt_l3_group_device_id, 10)
+            l3_batt_current  = round(l3_batt_current , 3)
+            print('L3 Battery Current:', l3_batt_current , 'A')
             
-            client.publish(f"{MQTT_TOPIC}/L1_apparent_power", f"{l1_apparent_power} kVA")
-            client.publish(f"{MQTT_TOPIC}/L1_active_power", f"{l1_active_power} kW")
-            client.publish(f"{MQTT_TOPIC}/L2_apparent_power", f"{l2_apparent_power} kVA")
-            client.publish(f"{MQTT_TOPIC}/L2_active_power", f"{l2_active_power} kW")
-            client.publish(f"{MQTT_TOPIC}/L3_apparent_power", f"{l3_apparent_power} kVA")
-            client.publish(f"{MQTT_TOPIC}/L3_active_power", f"{l3_active_power} kW")
-            client.publish(f"{MQTT_TOPIC}/Output_frequency", f"{outputfreq} Hz")
+            total_aparrent_power = xcom485i.read_info(xcom485i.addresses.xt_group_device_id, 278)
+            total_active_power = xcom485i.read_info(xcom485i.addresses.xt_group_device_id, 272)
+            total_aparrent_power = round(total_aparrent_power, 3)
+            total_active_power = round(total_active_power, 3)
+            print('Total power:', total_aparrent_power, 'kVA', '   ', total_active_power, 'kW')
+
+            battery_voltage = xcom485i.read_info(xcom485i.addresses.xt_group_device_id, 0)
+            battery_voltage = round(battery_voltage, 3)
+            print('Battery voltage:', battery_voltage, 'V')
+
+            battery_voltage_target = xcom485i.read_info(xcom485i.addresses.xt_group_device_id, 324)
+            battery_voltage_target = round(battery_voltage_target, 3)
+            print('Battery voltage target:', battery_voltage_target, 'V')
+
+
+            sum_apparent_power = round(l1_apparent_power + l2_apparent_power + l3_apparent_power,3)
+            sum_active_power = round(l1_active_power + l2_active_power + l3_active_power,3)
+            print('Sum power:', sum_apparent_power, 'kVA', '   ', sum_active_power, 'kW')
+
+
+
+            client.publish(f"{MQTT_TOPIC}/AC/L1_apparent_power_kVA", str(l1_apparent_power))
+            client.publish(f"{MQTT_TOPIC}/AC/L1_active_power_kW", str(l1_active_power))
+            client.publish(f"{MQTT_TOPIC}/AC/L2_apparent_power_kVA", str(l2_apparent_power))
+            client.publish(f"{MQTT_TOPIC}/AC/L2_active_power_kW", str(l2_active_power))
+            client.publish(f"{MQTT_TOPIC}/AC/L3_apparent_power_kVA", str(l3_apparent_power))
+            client.publish(f"{MQTT_TOPIC}/AC/L3_active_power_kW", str(l3_active_power))
+            client.publish(f"{MQTT_TOPIC}/AC/Output_frequency_Hz", str(outputfreq))
+            client.publish(f"{MQTT_TOPIC}/AC/Total_apparent_power_kVA", str(total_aparrent_power))
+            client.publish(f"{MQTT_TOPIC}/AC/Total_active_power_kW", str(total_active_power))
+            client.publish(f"{MQTT_TOPIC}/DC/L1_Battery_Current_A", str(l1_batt_current))
+            client.publish(f"{MQTT_TOPIC}/DC/L2_Battery_Current_A", str(l2_batt_current))
+            client.publish(f"{MQTT_TOPIC}/DC/L3_Battery_Current_A", str(l3_batt_current))
+            client.publish(f"{MQTT_TOPIC}/DC/Battery_voltage_V", str(battery_voltage))
+            client.publish(f"{MQTT_TOPIC}/AC/Sum_apparent_power_kVA", str(sum_apparent_power))
+            client.publish(f"{MQTT_TOPIC}/AC/Sum_active_power_kW", str(sum_active_power))
+            client.publish(f"{MQTT_TOPIC}/DC/Battery_voltage_target_V", str(battery_voltage_target))
+
+
